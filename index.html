@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07140f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="パチデータナビ">
+<title>パチデータナビ</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  background:#07110d;
+  color:#fff;
+}
+.app{
+  max-width:520px;
+  margin:auto;
+  min-height:100vh;
+  padding:calc(18px + env(safe-area-inset-top)) 16px 100px;
+}
+h1{font-size:25px;margin:4px 0}
+.sub{color:#92a69b;font-size:13px;margin-bottom:20px}
+.card{
+  background:#102019;
+  border:1px solid #1f392d;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
+}
+.green{color:#63e6a1}
+.muted{color:#8da197}
+.titleRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.badge{
+  background:#173c2b;
+  color:#79efad;
+  padding:6px 10px;
+  border-radius:20px;
+  font-weight:700;
+}
+.rank{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #21342b;
+}
+.rank:last-child{border:none}
+.medal{font-size:28px;width:35px}
+.machine{font-size:22px;font-weight:800}
+.score{margin-left:auto;font-size:22px;font-weight:800;color:#6de8a5}
+.reason{font-size:12px;color:#9aafa3;margin-top:3px}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:12px 14px;
+  font-weight:700;
+  font-size:15px;
+}
+.primary{background:#28c979;color:#06130c}
+.secondary{background:#20352b;color:#fff}
+
+.machineBtn{
+  width:100%;
+  text-align:left;
+  background:#102019;
+  color:#fff;
+  margin-bottom:9px;
+  border:1px solid #1f392d;
+}
+.machineBtn.active{border-color:#46dc91}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.stat{
+  background:#0b1712;
+  border-radius:14px;
+  padding:14px;
+}
+.stat b{display:block;font-size:22px;margin-top:5px}
+.chart{
+  height:150px;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding-top:15px;
+}
+.barWrap{
+  flex:1;
+  text-align:center;
+  color:#82968b;
+  font-size:10px;
+}
+.bar{
+  width:100%;
+  min-height:4px;
+  background:linear-gradient(#55e79b,#1e9f66);
+  border-radius:7px 7px 3px 3px;
+  margin-bottom:5px;
+}
+.barVal{font-size:11px;color:#d7e7df}
+
+.tabs{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#0b1712ee;
+  backdrop-filter:blur(12px);
+  border-top:1px solid #1d3328;
+  display:flex;
+  justify-content:center;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabsInner{
+  width:100%;
+  max-width:520px;
+  display:flex;
+}
+.tab{
+  flex:1;
+  background:transparent;
+  color:#71867a;
+  border-radius:0;
+  padding:13px 4px 11px;
+  font-size:12px;
+}
+.tab span{display:block;font-size:21px;margin-bottom:3px}
+.tab.active{color:#65e6a0}
+
+.sectionTitle{
+  font-size:18px;
+  font-weight:800;
+  margin:20px 0 10px;
+}
+input{
+  width:100%;
+  background:#09140f;
+  border:1px solid #284438;
+  color:#fff;
+  border-radius:10px;
+  padding:11px;
+  font-size:16px;
+  margin-top:5px;
+}
+label{font-size:12px;color:#98aa9f}
+.editGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.hidden{display:none}
+.notice{
+  font-size:12px;
+  color:#88a095;
+  line-height:1.55;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <div id="homePage">
+    <h1>🎰 パチデータナビ</h1>
+    <div class="sub">データから狙い目を見つける</div>
+
+    <div class="card">
+      <div class="titleRow">
+        <div>
+          <b>大曲店</b>
+          <div class="muted" style="font-size:12px">Lリコリス・リコイル</div>
+        </div>
+        <span class="badge">本日の分析</span>
+      </div>
+    </div>
+
+    <div class="sectionTitle">明日の狙い目 TOP3</div>
+    <div class="card" id="ranking"></div>
+
+    <div class="card notice">
+      ※過去データをもとにした参考スコアです。勝利や設定を保証するものではありません。
+    </div>
+  </div>
+
+  <div id="storePage" class="hidden">
+    <h1>店舗データ</h1>
+    <div class="sub">大曲店 / Lリコリス・リコイル</div>
+    <div id="machineList"></div>
+  </div>
+
+  <div id="detailPage" class="hidden">
+    <div class="titleRow">
+      <div>
+        <div class="muted">台番号</div>
+        <h1 id="detailNo">0384</h1>
+      </div>
+      <div class="badge" id="detailScore">92点</div>
+    </div>
+
+    <div class="card">
+      <b>おすすめ理由</b>
+      <div id="detailReason" class="green" style="margin-top:8px"></div>
+    </div>
+
+    <div class="sectionTitle">直近6日 BONUS</div>
+    <div class="card">
+      <div class="chart" id="chart"></div>
+    </div>
+
+    <div class="grid">
+      <div class="stat">BIG<b id="big"></b></div>
+      <div class="stat">REG<b id="reg"></b></div>
+      <div class="stat">合成<b id="combined"></b></div>
+      <div class="stat">総回転<b id="games"></b></div>
+    </div>
+
+    <div class="sectionTitle">今日のデータを修正</div>
+    <div class="card">
+      <div class="editGrid">
+        <label>BIG<input id="editBig" type="number"></label>
+        <label>REG<input id="editReg" type="number"></label>
+        <label>総回転<input id="editGames" type="number"></label>
+        <label>BONUS<input id="editBonus" type="number"></label>
+      </div>
+      <button class="primary" style="width:100%;margin-top:14px" onclick="saveEdit()">
+        保存する
+      </button>
+    </div>
+
+    <div class="card notice">
+      このiPhoneに入力内容を保存します。
+    </div>
+  </div>
+
+</div>
+
+<div class="tabs">
+  <div class="tabsInner">
+    <button class="tab active" id="tabHome" onclick="showPage('home')">
+      <span>🏠</span>ホーム
+    </button>
+    <button class="tab" id="tabStore" onclick="showPage('store')">
+      <span>🏢</span>店舗
+    </button>
+    <button class="tab" id="tabDetail" onclick="showPage('detail')">
+      <span>📊</span>台詳細
+    </button>
+  </div>
+</div>
+
+<script>
+const defaultMachines = [
+ {no:"0381",big:8,reg:2,combined:81,games:810,bonus:[10,69,95,72,68,48]},
+ {no:"0382",big:32,reg:5,combined:70.9,games:2622,bonus:[37,34,48,89,52,27]},
+ {no:"0383",big:24,reg:4,combined:84.2,games:2356,bonus:[28,57,43,43,19,45]},
+ {no:"0384",big:39,reg:8,combined:79.8,games:3747,bonus:[47,47,43,62,46,16]},
+ {no:"0385",big:15,reg:3,combined:107.5,games:1935,bonus:[18,48,84,29,12,26]},
+ {no:"0386",big:27,reg:5,combined:92.5,games:2959,bonus:[32,61,73,36,28,24]}
+];
+
+let machines = JSON.parse(localStorage.getItem("pachidataMachines")) || defaultMachines;
+let selected = localStorage.getItem("pachidataSelected") || "0384";
+
+function calcScore(m){
+  const probability = Math.max(0,Math.min(100,100-(m.combined-65)*1.25));
+  const volume = Math.min(100,m.games/38);
+  const bonus = Math.min(100,m.bonus[0]*2);
+  return Math.round(probability*0.55 + volume*0.25 + bonus*0.20);
+}
+
+function reason(m){
+  if(m.combined <= 80 && m.games >= 2500) return "合成確率が良好で、回転数もしっかり付いています";
+  if(m.combined <= 85) return "合成確率が比較的良好です";
+  if(m.bonus[0] >= 30) return "本日のBONUS回数が多めです";
+  return "過去データとの比較で候補に入っています";
+}
+
+function renderRanking(){
+  const sorted=[...machines].sort((a,b)=>calcScore(b)-calcScore(a)).slice(0,3);
+  const medals=["🥇","🥈","🥉"];
+  document.getElementById("ranking").innerHTML=sorted.map((m,i)=>`
+    <div class="rank" onclick="openMachine('${m.no}')">
+      <div class="medal">${medals[i]}</div>
+      <div>
+        <div class="machine">${m.no}</div>
+        <div class="reason">${reason(m)}</div>
+      </div>
+      <div class="score">${calcScore(m)}点</div>
+    </div>
+  `).join("");
+}
+
+function renderMachines(){
+  document.getElementById("machineList").innerHTML=machines.map(m=>`
+    <button class="machineBtn ${selected===m.no?'active':''}" onclick="openMachine('${m.no}')">
+      <div class="titleRow">
+        <div>
+          <div class="machine">${m.no}</div>
+          <div class="reason">BIG ${m.big} / REG ${m.reg} / 合成 1/${m.combined}</div>
+        </div>
+        <div class="score">${calcScore(m)}点</div>
+      </div>
+    </button>
+  `).join("");
+}
+
+function renderDetail(){
+  const m=machines.find(x=>x.no===selected) || machines[0];
+  document.getElementById("detailNo").textContent=m.no;
+  document.getElementById("detailScore").textContent=calcScore(m)+"点";
+  document.getElementById("detailReason").textContent=reason(m);
+  document.getElementById("big").textContent=m.big;
+  document.getElementById("reg").textContent=m.reg;
+  document.getElementById("combined").textContent="1/"+m.combined;
+  document.getElementById("games").textContent=m.games.toLocaleString();
+  document.getElementById("editBig").value=m.big;
+  document.getElementById("editReg").value=m.reg;
+  document.getElementById("editGames").value=m.games;
+  document.getElementById("editBonus").value=m.bonus[0];
+
+  const max=Math.max(...m.bonus,1);
+  const labels=["今日","1日前","2日前","3日前","4日前","5日前"];
+  document.getElementById("chart").innerHTML=m.bonus.map((v,i)=>`
+    <div class="barWrap">
+      <div class="barVal">${v}</div>
+      <div class="bar" style="height:${Math.max(8,v/max*105)}px"></div>
+      ${labels[i]}
+    </div>
+  `).join("");
+}
+
+function openMachine(no){
+  selected=no;
+  localStorage.setItem("pachidataSelected",selected);
+  renderMachines();
+  renderDetail();
+  showPage("detail");
+}
+
+function saveEdit(){
+  const m=machines.find(x=>x.no===selected);
+  m.big=Number(document.getElementById("editBig").value)||0;
+  m.reg=Number(document.getElementById("editReg").value)||0;
+  m.games=Number(document.getElementById("editGames").value)||0;
+  m.bonus[0]=Number(document.getElementById("editBonus").value)||0;
+
+  const total=m.big+m.reg;
+  if(total>0 && m.games>0){
+    m.combined=Math.round((m.games/total)*10)/10;
+  }
+
+  localStorage.setItem("pachidataMachines",JSON.stringify(machines));
+  renderRanking();
+  renderMachines();
+  renderDetail();
+  alert("保存しました");
+}
+
+function showPage(page){
+  ["home","store","detail"].forEach(p=>{
+    document.getElementById(p+"Page").classList.toggle("hidden",p!==page);
+    document.getElementById("tab"+p.charAt(0).toUpperCase()+p.slice(1))
+      .classList.toggle("active",p===page);
+  });
+  window.scrollTo(0,0);
+}
+
+renderRanking();
+renderMachines();
+renderDetail();
+</script>
+</body>
+</html>
