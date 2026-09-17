@@ -3,454 +3,580 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050813">
+<meta name="theme-color" content="#05070d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="パチデータナビ">
-<title>パチデータナビ LIVE v3</title>
+<title>パチデータナビ LIVE v5.0</title>
 <style>
-:root{
-  --bg:#050813;--panel:#0b1220;--panel2:#0e1728;--line:#1d2d46;
-  --text:#f7f9ff;--muted:#8fa2bd;--blue:#13b9ff;--pink:#ff2f7d;
-  --purple:#8a42ff;--green:#22d49a;--red:#ff5263;--yellow:#ffd05b;
-  --shadow:0 12px 35px rgba(0,0,0,.35)
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg)}
-body{
-  margin:0;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,
-  "Hiragino Sans","Yu Gothic UI",sans-serif;
-  background:
-   radial-gradient(circle at 90% 0%,rgba(19,185,255,.10),transparent 32%),
-   radial-gradient(circle at 0% 30%,rgba(138,66,255,.08),transparent 30%),
-   var(--bg);
-  min-height:100vh;padding-bottom:88px
-}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-header{
-  position:sticky;top:0;z-index:30;
-  background:rgba(5,8,19,.88);backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  padding:calc(10px + env(safe-area-inset-top)) 16px 10px
-}
-.head{max-width:720px;margin:auto;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:21px;font-weight:950;letter-spacing:-.6px}
-.logo i{font-style:normal;color:var(--pink)}
-.ver{font-size:10px;font-weight:900;padding:5px 9px;border:1px solid #254a71;border-radius:999px;color:#a9ddff;background:#0b1b2d}
-.wrap{max-width:720px;margin:auto;padding:14px}
-.page{display:none;animation:fade .18s ease}.page.on{display:block}
-@keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
-.card{
-  background:linear-gradient(145deg,rgba(14,23,40,.96),rgba(8,14,25,.96));
-  border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:12px;
-  box-shadow:var(--shadow)
-}
-.hero{
-  position:relative;overflow:hidden;min-height:170px;padding:20px;
-  background:
-    radial-gradient(circle at 78% 28%,rgba(255,47,125,.23),transparent 24%),
-    radial-gradient(circle at 68% 70%,rgba(19,185,255,.20),transparent 30%),
-    linear-gradient(135deg,#111a2e,#130916 72%);
-}
-.hero:after{
-  content:"喰";position:absolute;right:12px;bottom:-35px;font-size:155px;font-weight:950;
-  color:rgba(255,255,255,.035);transform:rotate(-7deg)
-}
-.eyebrow{font-size:10px;color:#8db8dc;font-weight:800;letter-spacing:1px}
-.hero h1{margin:7px 0 3px;font-size:29px;line-height:1.1;letter-spacing:-1px}
-.hero h1 span{color:#ff4b79;text-shadow:0 0 18px rgba(255,47,125,.45)}
-.hero p{margin:0;color:#9fb0c7;font-size:11px;line-height:1.6}
-.status{
-  display:inline-flex;gap:6px;align-items:center;margin-top:14px;padding:7px 10px;
-  border:1px solid #214264;border-radius:999px;background:#071522;color:#bce7ff;font-size:10px
-}
-.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green)}
-.action{
-  width:100%;border:0;border-radius:17px;color:#fff;padding:16px 17px;margin-bottom:10px;
-  display:grid;grid-template-columns:42px 1fr 24px;gap:10px;align-items:center;text-align:left;
-  box-shadow:0 10px 28px rgba(0,0,0,.25)
-}
-.action .ico{font-size:25px;text-align:center}.action b{display:block;font-size:17px}.action small{display:block;margin-top:2px;opacity:.82;font-size:10px}.action .arr{font-size:24px}
-.a-blue{background:linear-gradient(110deg,#058fd9,#13b9ff)}
-.a-pink{background:linear-gradient(110deg,#e8226c,#ff3d8c)}
-.a-purple{background:linear-gradient(110deg,#6335e8,#9847ff)}
-.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.mini{
-  border:1px solid var(--line);background:#09111e;color:#cfe3f7;border-radius:15px;
-  padding:12px 5px;text-align:center;font-size:10px
-}
-.mini span{display:block;font-size:21px;margin-bottom:4px}
-.section-title{font-size:15px;font-weight:900;margin:3px 0 11px}
-.section-title small{float:right;color:var(--muted);font-size:9px;font-weight:600}
-.banner{
-  border:1px solid #49203c;background:linear-gradient(100deg,#24101f,#121226);
-  border-radius:14px;padding:11px 12px;margin-bottom:12px;color:#ffc0db;font-size:11px
-}
-.field{margin-bottom:11px}.field label{display:flex;justify-content:space-between;color:#9aacc4;font-size:10px;margin:0 2px 5px}
-.field label em{font-style:normal;color:#60738f}
-.field input,.field select,.field textarea{
-  width:100%;border:1px solid #263a56;border-radius:13px;background:#07101d;color:#fff;
-  padding:13px;outline:none;font-size:15px
-}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(19,185,255,.10)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.primary{
-  width:100%;border:0;border-radius:15px;padding:14px;color:#fff;font-weight:950;
-  background:linear-gradient(100deg,var(--blue),var(--purple));box-shadow:0 8px 24px rgba(67,78,255,.24)
-}
-.secondary{
-  width:100%;border:1px solid #2b405f;border-radius:13px;padding:12px;color:#d9e8f8;
-  background:#0a1423;font-weight:800
-}
-.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.q{
-  border:1px solid #263b58;background:#091321;color:#fff;border-radius:14px;padding:13px 11px;
-  text-align:left;font-weight:850
-}
-.q b{float:right;color:#ff5b8d;font-size:19px}.q:active{transform:scale(.98);border-color:#ff4b83}
-.chips{display:flex;gap:7px;overflow:auto;padding-bottom:3px}
-.chip{
-  white-space:nowrap;border:1px solid #2b405e;background:#091321;color:#9fb1c8;
-  border-radius:999px;padding:9px 11px;font-size:10px
-}
-.chip.on{color:#fff;background:#173d32;border-color:#2e9c75;box-shadow:0 0 15px rgba(34,212,154,.12)}
-.rank{
-  display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:9px;
-  padding:12px 0;border-bottom:1px solid #17263b
-}
-.rank:last-child{border:0}
-.medal{
-  width:35px;height:35px;border-radius:12px;display:grid;place-items:center;
-  background:#152033;font-size:17px;font-weight:950
-}
-.rank:nth-child(1) .medal{background:linear-gradient(145deg,#6c470b,#b47a12);color:#ffe293}
-.rank:nth-child(2) .medal{background:#293448;color:#e5edff}
-.rank:nth-child(3) .medal{background:#3d2b24;color:#e8a47c}
-.rmain b{font-size:18px}.rmain small{display:block;color:#879bb6;font-size:9px;margin-top:3px}
-.score{text-align:right}.score b{font-size:23px;color:#ff5b8d}.score small{display:block;color:#7f91a9;font-size:8px}
-.notice{font-size:9px;line-height:1.6;color:#9d8750;background:#211b0e;border:1px solid #493d1e;border-radius:12px;padding:10px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.metric{background:#07101c;border:1px solid #1e324d;border-radius:14px;padding:11px;text-align:center}
-.metric span{display:block;color:#8498b3;font-size:8px}.metric b{display:block;margin-top:3px;font-size:17px}
-.green{color:var(--green)}.pink{color:#ff5b8d}.blue{color:var(--blue)}.yellow{color:var(--yellow)}
-.judge{
-  border-radius:17px;padding:15px;background:linear-gradient(120deg,#111d2c,#0d1220);
-  border:1px solid #29415f
-}
-.judge .big{font-size:23px;font-weight:950;margin:3px 0}.judge p{font-size:10px;color:#9cb0c9;margin:0;line-height:1.6}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:10px;white-space:nowrap}
-th,td{padding:9px 5px;border-bottom:1px solid #192a41;text-align:right}
-th{color:#7188a5;font-weight:700}th:first-child,td:first-child{text-align:left}
-.history-item{padding:11px 0;border-bottom:1px solid #192a41}
-.history-item:last-child{border:0}.history-item b{font-size:14px}.history-item small{display:block;color:#8195b0;margin-top:3px;font-size:9px}
-.empty{text-align:center;padding:24px;color:#71839c;font-size:11px}
-.report-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #192a41;font-size:11px}
-.report-row:last-child{border:0}
-.bottom{
-  position:fixed;z-index:40;bottom:0;left:0;right:0;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:rgba(5,8,19,.94);backdrop-filter:blur(18px);border-top:1px solid #1c2a3f;
-  padding:5px 4px calc(5px + env(safe-area-inset-bottom))
-}
-.tab{border:0;background:none;color:#71839d;padding:6px 2px;font-size:9px}.tab span{display:block;font-size:20px;margin-bottom:2px}.tab.on{color:#55c9ff}
-.toast{
-  position:fixed;z-index:100;left:50%;bottom:95px;transform:translateX(-50%) translateY(20px);
-  background:#f4f8ff;color:#08101d;padding:10px 14px;border-radius:999px;font-size:11px;font-weight:850;
-  opacity:0;pointer-events:none;transition:.2s;white-space:nowrap
-}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-details{border:1px solid #1e3049;border-radius:14px;padding:0 11px;background:#08111e}
-summary{padding:12px 0;color:#a9bbd0;font-size:11px;font-weight:850}
-details .inside{padding:0 0 10px}
-.danger{color:#ff8390;border-color:#542a33;background:#1c0e13}
+:root{--bg:#05070d;--p:#0b111c;--p2:#0f1725;--line:#22314a;--txt:#f6f8ff;--mut:#8da0bb;--cyan:#18c8ff;--pink:#ff356d;--vio:#8b5cff;--green:#25d99a;--amber:#ffc857;--red:#ff5263;--shadow:0 14px 36px rgba(0,0,0,.38)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:var(--bg)}body{margin:0;color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif;background:radial-gradient(circle at 95% 0,rgba(255,53,109,.11),transparent 28%),radial-gradient(circle at 0 25%,rgba(24,200,255,.09),transparent 30%),var(--bg);min-height:100vh;padding-bottom:86px}button,input,select,textarea{font:inherit}button{cursor:pointer}header{position:sticky;top:0;z-index:50;padding:calc(9px + env(safe-area-inset-top)) 13px 9px;background:rgba(5,7,13,.9);backdrop-filter:blur(18px);border-bottom:1px solid #1b2638}.head{max-width:760px;margin:auto;display:flex;align-items:center;gap:10px}.appmark{width:42px;height:42px;border-radius:13px;background:radial-gradient(circle at 68% 28%,#ff527e 0 4%,transparent 5%),linear-gradient(145deg,#101928,#06070c);border:1px solid #ff356d;box-shadow:0 0 20px rgba(255,53,109,.28);display:grid;place-items:center;position:relative;overflow:hidden}.appmark:before{content:"P";font-weight:1000;font-size:25px;font-style:italic;text-shadow:3px 0 #18c8ff,-2px 0 #ff356d}.appmark:after{content:"5";position:absolute;right:4px;bottom:1px;font-size:10px;font-weight:1000;color:#ff668f}.brand{flex:1}.brand b{font-size:19px;letter-spacing:-.6px}.brand b i{font-style:normal;color:var(--pink)}.brand small{display:block;color:#6f849f;font-size:8px;letter-spacing:1.4px}.ver{font-size:9px;padding:5px 8px;border-radius:999px;border:1px solid #28516c;color:#aee9ff;background:#091b28}.wrap{max-width:760px;margin:auto;padding:12px}.page{display:none}.page.on{display:block}.card{background:linear-gradient(145deg,rgba(15,23,37,.97),rgba(8,13,22,.97));border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:11px;box-shadow:var(--shadow)}.hero{padding:18px;background:radial-gradient(circle at 88% 15%,rgba(255,53,109,.25),transparent 23%),radial-gradient(circle at 75% 85%,rgba(24,200,255,.15),transparent 25%),linear-gradient(135deg,#10192a,#140a13)}.eyebrow{font-size:9px;color:#7fcff0;letter-spacing:1.4px;font-weight:900}.hero h1{font-size:28px;margin:6px 0 2px}.hero h1 span{color:#ff4f7d}.hero p{font-size:10px;color:#9aacbf;margin:0;line-height:1.6}.badge{display:inline-block;margin-top:10px;padding:6px 9px;border:1px solid #2a4661;border-radius:999px;color:#bcecff;background:#071522;font-size:9px}.section{font-size:15px;font-weight:950;margin:2px 0 10px}.section small{float:right;font-size:8px;color:#7187a2;font-weight:700}.action{width:100%;border:0;border-radius:16px;padding:15px;margin-bottom:9px;color:#fff;text-align:left;display:grid;grid-template-columns:38px 1fr 18px;align-items:center;gap:9px}.action .ico{font-size:23px}.action b{font-size:16px}.action small{display:block;font-size:9px;opacity:.8;margin-top:2px}.bluebg{background:linear-gradient(110deg,#087fb7,#18c8ff)}.pinkbg{background:linear-gradient(110deg,#d92059,#ff477d)}.violetbg{background:linear-gradient(110deg,#5b36c7,#8b5cff)}.darkbtn{background:linear-gradient(110deg,#152238,#202d46);border:1px solid #2b3f5c}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.metric{background:#07101b;border:1px solid #1d304a;border-radius:13px;padding:10px;text-align:center}.metric span{display:block;font-size:8px;color:#7890ac}.metric b{display:block;font-size:16px;margin-top:3px}.field{margin-bottom:10px}.field label{display:block;font-size:9px;color:#8fa3bd;margin:0 2px 5px}.field input,.field select,.field textarea{width:100%;border:1px solid #293b55;border-radius:12px;background:#07101b;color:#fff;padding:12px;outline:none}.primary,.secondary{width:100%;border-radius:13px;padding:13px;font-weight:950}.primary{border:0;color:#fff;background:linear-gradient(100deg,var(--cyan),var(--vio))}.secondary{border:1px solid #2b405f;color:#d8e8f8;background:#0a1423}.chips{display:flex;gap:6px;overflow:auto;padding-bottom:2px}.chip{white-space:nowrap;border:1px solid #2a3c55;background:#091321;color:#9db0c6;border-radius:999px;padding:8px 10px;font-size:9px}.chip.on{background:#183c31;border-color:#2c9873;color:#fff}.tablewrap{overflow:auto;border-radius:12px;border:1px solid #1d2d43}table{border-collapse:collapse;width:100%;font-size:9px;white-space:nowrap;background:#07101a}th,td{padding:8px 6px;border-bottom:1px solid #19283c;text-align:center}th{position:sticky;top:0;background:#0d1725;color:#86a0bc}td:first-child,th:first-child{position:sticky;left:0;background:#0c1522;font-weight:900}.hot{color:#ff5a82;font-weight:950}.cool{color:#39caff;font-weight:950}.muted{color:#6e819a}.rank{display:grid;grid-template-columns:38px 1fr auto;gap:9px;align-items:center;padding:11px 0;border-bottom:1px solid #19283d}.rank:last-child{border:0}.medal{width:34px;height:34px;border-radius:11px;background:#182337;display:grid;place-items:center;font-weight:950}.rank:nth-child(1) .medal{background:#5f450d;color:#ffe089}.rank:nth-child(2) .medal{background:#28354a}.rank:nth-child(3) .medal{background:#3e2b23;color:#f2ad83}.rmain b{font-size:17px}.rmain small{display:block;color:#8195af;font-size:8px;margin-top:3px;line-height:1.45}.score{text-align:right}.score b{font-size:20px;color:#ff5a82}.score small{display:block;font-size:7px;color:#72849c}.reason{margin-top:8px;background:#07101b;border:1px solid #1e314b;border-radius:13px;padding:11px}.reason b{font-size:11px}.reason p{font-size:9px;color:#9bacc0;line-height:1.65;margin:5px 0 0}.warn{font-size:8px;line-height:1.55;color:#c5aa67;background:#201a0d;border:1px solid #493b1d;border-radius:11px;padding:9px}.chartbox{height:150px;border:1px solid #1e324a;background:#07101a;border-radius:13px;padding:8px;position:relative}.chartbox canvas{width:100%;height:100%}.machineTabs{display:flex;gap:6px;overflow:auto;margin-bottom:9px}.mtab{border:1px solid #263b56;background:#091321;color:#9db1c8;border-radius:999px;padding:8px 10px;font-size:9px;white-space:nowrap}.mtab.on{background:#1b3450;color:#fff;border-color:#2f7dac}.estimate{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #18283d}.estimate:last-child{border:0}.estMain b{font-size:13px}.estMain small{display:block;color:#8194ad;font-size:8px;margin-top:3px}.range{font-size:13px;font-weight:950;padding:6px 8px;border-radius:9px;background:#132138}.low{color:#91a1b6}.mid{color:#54d2ff}.high{color:#ff6a90}.confidence{font-size:8px;color:#7e91a9}.datefix{font-size:9px;color:#8ea4be;line-height:1.6}.bottom{position:fixed;z-index:60;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(5,7,13,.94);backdrop-filter:blur(18px);border-top:1px solid #1b293d;padding:4px 2px calc(4px + env(safe-area-inset-bottom))}.tab{border:0;background:none;color:#6f8198;font-size:8px;padding:5px 1px}.tab span{display:block;font-size:18px;margin-bottom:1px}.tab.on{color:#54d1ff}.toast{position:fixed;z-index:100;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#f4f8ff;color:#07101a;padding:9px 13px;border-radius:999px;font-size:10px;font-weight:900;opacity:0;transition:.2s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}details{border:1px solid #1f3149;border-radius:13px;padding:0 10px;background:#08111d;margin-top:8px}summary{padding:11px 0;font-size:10px;color:#a8bbd1;font-weight:900}.inside{padding:0 0 10px;font-size:9px;color:#91a5bd;line-height:1.65}.pill{display:inline-block;padding:4px 7px;border-radius:999px;background:#132237;border:1px solid #263c59;font-size:8px;color:#a9bed4;margin:2px}.filepick{border:1px dashed #36516f;border-radius:14px;padding:14px;text-align:center;background:#08111d}.filepick input{width:100%;font-size:10px}.filepick small{display:block;color:#7d91aa;font-size:8px;margin-top:6px}.list{padding-left:18px;margin:6px 0;color:#9cafc5;font-size:9px;line-height:1.7}@media(min-width:650px){.desktop2{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}.desktop2>.card{margin-bottom:10px}}
+
+.setting-day{display:grid;grid-template-columns:72px 1fr auto;gap:9px;align-items:center;padding:11px 0;border-bottom:1px solid #192a41}
+.setting-day:last-child{border-bottom:0}
+.setting-date{font-weight:900;font-size:12px}
+.setting-est{font-weight:900;font-size:13px}
+.setting-est small{display:block;color:#8195b0;font-size:9px;margin-top:3px;font-weight:600}
+.conf{font-size:9px;padding:5px 8px;border-radius:999px;border:1px solid #3a4354;color:#aebbd0;background:#101725;white-space:nowrap}
+.conf.low{border-color:#5b4a21;color:#ffd56a;background:#211b0e}
+.conf.mid{border-color:#244b65;color:#75d7ff;background:#081c29}
+.conf.high{border-color:#285844;color:#65e3ad;background:#0a2119}
+
+
+.hint-tabs{display:flex;gap:7px;overflow:auto;padding:2px 0 10px}
+.hint-tab{white-space:nowrap;border:1px solid #2a3d59;background:#091321;color:#a9bdd6;border-radius:999px;padding:9px 11px;font-size:10px;font-weight:850}
+.hint-tab.on{background:linear-gradient(100deg,#0a7ea9,#7b35e6);color:#fff;border-color:#4f6bd4}
+.hint-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.hint-card{overflow:hidden;border:1px solid #263a55;border-radius:15px;background:#08111d}
+.hint-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111927}
+.hint-body{padding:9px}
+.hint-name{font-size:11px;font-weight:950;line-height:1.35}
+.hint-effect{font-size:9px;color:#91a7c1;margin-top:3px;line-height:1.4}
+.hint-count{display:grid;grid-template-columns:36px 1fr 36px;gap:6px;align-items:center;margin-top:8px}
+.hint-count button{border:1px solid #324a69;background:#101c2d;color:#fff;border-radius:10px;height:34px;font-size:18px;font-weight:900}
+.hint-count b{text-align:center;font-size:16px}
+.hint-group{display:none}.hint-group.on{display:block}
+.hint-summary{border:1px solid #314866;background:linear-gradient(130deg,#101c2c,#0a101a);border-radius:16px;padding:13px;margin-top:10px}
+.hint-summary .headline{font-size:19px;font-weight:950}
+.setting-bars{display:grid;gap:6px;margin-top:10px}
+.setting-bar{display:grid;grid-template-columns:42px 1fr 42px;gap:7px;align-items:center;font-size:9px}
+.setting-track{height:8px;background:#172338;border-radius:999px;overflow:hidden}
+.setting-fill{height:100%;background:linear-gradient(90deg,#13b9ff,#ff2f7d);border-radius:999px}
+.source-note{font-size:8px;color:#7f92ab;line-height:1.5;margin-top:9px}
+.source-note a{color:#68d3ff}
+.end-overview{width:100%;border-radius:12px;border:1px solid #263a55;margin-bottom:9px}
+@media(max-width:390px){.hint-grid{grid-template-columns:1fr}}
+
+
+.library-search{position:sticky;top:71px;z-index:20;background:rgba(5,7,13,.94);padding:8px 0 10px;backdrop-filter:blur(12px)}
+.machine-pills{display:flex;gap:7px;overflow:auto;padding:2px 0 10px}
+.machine-pill{white-space:nowrap;border:1px solid #2c405e;background:#0a1422;color:#a9bed9;border-radius:999px;padding:9px 12px;font-size:10px;font-weight:900}
+.machine-pill.on{color:#fff;border-color:#4a74d8;background:linear-gradient(100deg,#087ba9,#7d37e7)}
+.book-hero{padding:16px;border:1px solid #28415e;border-radius:18px;background:radial-gradient(circle at 100% 0,rgba(255,53,109,.16),transparent 40%),linear-gradient(145deg,#111d2f,#090e18);margin-bottom:11px}
+.book-hero h2{margin:0 0 4px;font-size:20px}.book-hero p{margin:0;color:#8fa5c0;font-size:10px;line-height:1.6}
+.quickchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.quickchip{font-size:8px;padding:6px 8px;border-radius:999px;border:1px solid #2c4665;color:#b7d7f1;background:#0a1725}
+.book-section{margin-bottom:11px}.book-section h3{font-size:13px;margin:0 0 9px;display:flex;align-items:center;gap:7px}
+.data-table{width:100%;border-collapse:collapse;font-size:9px}.data-table th,.data-table td{padding:8px 6px;border-bottom:1px solid #1e3048;text-align:center}.data-table th{color:#83a1c1;font-weight:800}.data-table td:first-child,.data-table th:first-child{text-align:left}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.info-box{border:1px solid #233852;background:#09131f;border-radius:13px;padding:10px}.info-box b{font-size:11px}.info-box small{display:block;color:#8da4be;font-size:8px;line-height:1.55;margin-top:4px}
+.hint-list{display:grid;gap:7px}.hint-row{display:grid;grid-template-columns:42px 1fr auto;gap:8px;align-items:center;border:1px solid #233852;background:#09131f;border-radius:13px;padding:8px}.hint-art{height:42px;border-radius:11px;display:grid;place-items:center;font-size:21px;background:linear-gradient(145deg,#13243a,#10111a);border:1px solid #304764}.hint-row b{font-size:10px}.hint-row small{display:block;color:#91a8c1;font-size:8px;line-height:1.4;margin-top:2px}.hint-tag{font-size:8px;font-weight:900;padding:5px 7px;border-radius:999px;border:1px solid #4b466a;color:#d5c8ff;white-space:nowrap}
+.unknown{color:#ffc857}.sourcebox{font-size:8px;color:#8297b1;line-height:1.6;border-top:1px solid #1d2d43;padding-top:8px;margin-top:9px}.sourcebox a{color:#5fd4ff}
+.search-hit{outline:1px solid #18c8ff;box-shadow:0 0 0 3px rgba(24,200,255,.08)}
+.live-model-note{font-size:8px;color:#8ca4bf;line-height:1.5;margin-top:5px}
+@media(max-width:390px){.info-grid{grid-template-columns:1fr}.library-search{top:68px}}
+
 </style>
 </head>
 <body>
-<header>
-  <div class="head">
-    <div class="logo">パチデータ<i>ナビ</i></div>
-    <div class="ver">LIVE v3.0</div>
-  </div>
-</header>
-
+<header><div class="head"><div class="appmark"></div><div class="brand"><b>パチデータ<i>ナビ</i></b><small>PACHIDATA NAVI</small></div><div class="ver">LIVE v5.0</div></div></header>
 <main class="wrap">
 <section class="page on" id="home">
-  <div class="card hero">
-    <div class="eyebrow">TODAY'S SLOT SUPPORT</div>
-    <h1>L <span>東京喰種</span></h1>
-    <p>NEW YORK×2 広面｜実戦データをシンプルに記録</p>
-    <div class="status"><i class="dot"></i><span id="homeState">入力準備OK</span></div>
-  </div>
-
-  <button class="action a-blue" data-go="live">
-    <div class="ico">✍️</div><div><b>今日の実戦を入力</b><small>G数・CZ・ATをサクッと記録</small></div><div class="arr">›</div>
-  </button>
-  <button class="action a-pink" data-go="analysis">
-    <div class="ico">🎯</div><div><b>朝イチ候補を見る</b><small>前日データからチェック順を表示</small></div><div class="arr">›</div>
-  </button>
-  <button class="action a-purple" data-go="history">
-    <div class="ico">🔎</div><div><b>保存データを見る</b><small>実戦履歴・収支をまとめて確認</small></div><div class="arr">›</div>
-  </button>
-
-  <div class="mini-grid">
-    <button class="mini" data-go="live"><span>🎰</span>実戦</button>
-    <button class="mini" data-go="analysis"><span>📊</span>分析</button>
-    <button class="mini" data-go="history"><span>🗂️</span>履歴</button>
-  </div>
+<div class="card hero"><div class="eyebrow">DATA DRIVEN SLOT SUPPORT</div><h1>パチデータナビ <span>v4</span></h1><p>店舗 × 台番号 × 機種 × 7日履歴 × 実戦データを、理由つきで分析。</p><div class="badge" id="todayBadge">基準日を確認中…</div></div>
+<button class="action bluebg" data-go="encyclopedia"><div class="ico">📚</div><div><b>機種図鑑 V5</b><small>スペック・小役・天井・設定差・終了画面・トロフィーをアプリ内で確認</small></div><div>›</div></button>
+<button class="action pinkbg" data-go="analysis"><div class="ico">🎯</div><div><b>明日の狙い台を詳しく見る</b><small>候補だけでなく「なぜ・どう動くか」まで解説</small></div><div>›</div></button>
+<button class="action bluebg" data-go="trends"><div class="ico">📈</div><div><b>過去7日グラフ</b><small>台ごとのBONUS推移と日別設定推測</small></div><div>›</div></button>
+<button class="action violetbg" data-go="import"><div class="ico">📥</div><div><b>P's CUBEデータ取込</b><small>PDF保存データを登録する入口</small></div><div>›</div></button>
+<button class="action darkbtn" data-go="live"><div class="ico">🎰</div><div><b>実戦中の判断</b><small>CZ・AT・示唆・G数から続行/様子見/ヤメ候補</small></div><div>›</div></button>
+<div class="grid3"><div class="metric"><span>登録台</span><b>11</b></div><div class="metric"><span>履歴</span><b>7日</b></div><div class="metric"><span>店舗</span><b>広面</b></div></div>
 </section>
 
-<section class="page" id="live">
-  <div class="banner">⚡ 必要な項目だけでOK。入力内容はこのiPhoneに自動保存されます。</div>
-  <div class="card">
-    <div class="section-title">実戦データ <small>AUTO SAVE</small></div>
-    <div class="two">
-      <div class="field"><label>台番号</label><select id="machine"></select></div>
-      <div class="field"><label>日付</label><input id="playDate" type="date"></div>
-    </div>
-    <div class="two">
-      <div class="field"><label>液晶G数 <em>CZ間</em></label><input id="lcd" type="number" inputmode="numeric" placeholder="例 180"></div>
-      <div class="field"><label>AT間G数</label><input id="atg" type="number" inputmode="numeric" placeholder="例 420"></div>
-    </div>
-    <div class="two">
-      <div class="field"><label>投資 <em>千円</em></label><input id="inv" type="number" inputmode="numeric" placeholder="例 12"></div>
-      <div class="field"><label>差枚 <em>目安</em></label><input id="diff" type="number" inputmode="numeric" placeholder="例 +1500"></div>
-    </div>
+<section class="page" id="encyclopedia">
+  <div class="library-search">
+    <div class="field" style="margin:0"><label>🔎 機種図鑑内検索</label><input id="bookSearch" placeholder="例：トロフィー / 天井 / 共通ベル / 設定6"></div>
   </div>
-
   <div class="card">
-    <div class="section-title">ワンタップ記録 <small>押すだけ</small></div>
-    <div class="quick" id="quick"></div>
-    <button class="secondary" id="undo" style="margin-top:9px">↩ 直前の1件を取り消す</button>
+    <div class="section">機種図鑑 V5 <small>情報確認 2026/09/17</small></div>
+    <div class="machine-pills" id="bookMachinePills"></div>
+    <div class="datefix">「ニコ」はリコリコ、「SAO」は現在のSAOⅡとして収録。解析未公表の数値は推測で埋めず「調査中」と表示します。</div>
   </div>
-
-  <div class="card">
-    <div class="section-title">朝イチ・状態</div>
-    <div class="chips" id="chips"></div>
-  </div>
-
-  <details>
-    <summary>＋ メモ・その他の入力</summary>
-    <div class="inside">
-      <div class="field"><label>メモ</label><textarea id="memo" rows="3" placeholder="終了画面、招待状、気づいたことなど"></textarea></div>
-    </div>
-  </details>
-  <button class="primary" id="saveSession" style="margin-top:12px">✓ この実戦を履歴に保存</button>
+  <div id="bookContent"></div>
 </section>
 
 <section class="page" id="analysis">
-  <div class="card">
-    <div class="section-title">朝イチ チェック候補 <small>前日共有データ</small></div>
-    <div id="ranking"></div>
-    <div class="notice">これは「高設定ランキング」ではなく、最初に確認する順番の参考です。設定・勝利・利益を保証しません。</div>
-  </div>
+<div class="card"><div class="section">明日の候補 <small>理由つき分析</small></div><div id="ranking"></div><div class="warn">候補順位は「設定を保証する順位」ではありません。BONUS回数だけで設定を断定せず、当日の並び・グラフ・総G・CZ/AT・示唆を確認して更新します。</div></div>
+<div class="card"><div class="section">どう立ち回る？</div><div class="reason"><b>① 入店直後</b><p>まず上位候補の空き状況と並びを確認。1台だけを見るのではなく、隣接台も含めて店が「並び」「ずらし」「据え置き」のどれを使っていそうかを見る。</p></div><div class="reason"><b>② 座れなかったら</b><p>第2・第3候補へ機械的に移動。グールが取れない場合は、追加で送ってもらう他機種の7日データと同じ基準で比較する。</p></div><div class="reason"><b>③ 実戦開始後</b><p>BONUS回数ではなく、機種固有のCZ・AT初当り・直撃・終了画面・示唆・リセット挙動を優先。弱い根拠が重なる場合は早めに候補を下げる。</p></div></div>
+<div class="card"><div class="section">分析の見方</div><ul class="list"><li>直近だけでなく7日全体の波と繰り返しを見る</li><li>大きく出た翌日の「据え置き/落とし/横ずらし」を記録</li><li>曜日・イベント・末尾・角・並びの傾向を蓄積</li><li>予測は翌日の実績と自動照合し、バックテストへ回す</li></ul></div>
+</section>
+<section class="page" id="trends">
+<div class="card"><div class="section">7日BONUSグラフ <small>9/11 → 9/17</small></div><div class="machineTabs" id="machineTabs"></div><div class="chartbox"><canvas id="trendCanvas"></canvas></div><div id="trendSummary" class="reason"></div></div>
+<div class="card"><div class="section">各台・過去7日の設定推測 <small>暫定</small></div><div class="field"><label>台番号</label><select id="estMachine"></select></div><div id="estimates"></div><div class="warn">重要：現時点の過去日データは主にBONUS回数です。総G・差枚・グラフ・CZ/AT初当り・示唆が無い日は、設定1〜6を正確に推測できません。その日は「判定保留」または広いレンジで表示し、データ追加後に自動で絞る設計です。</div></div>
+<div class="card"><div class="section">7日一覧</div><div class="tablewrap"><table id="sevenTable"></table></div></div>
+</section>
+<section class="page" id="import">
+<div class="card"><div class="section">P's CUBE PDF取込 <small>v4 BETA</small></div><div class="filepick"><input id="pdfFile" type="file" accept="application/pdf"><small>iPhoneで「共有 → 印刷 → PDF保存」したファイルを選択</small></div><div id="fileStatus" class="reason"><b>現在のv4</b><p>ファイル名と取込日を保存できます。PDF本文の完全自動解析は次段階で実装します。チャッピーに送ったPDFから抽出したデータは、この画面の7日データへ反映する想定です。</p></div></div>
+<div class="card"><div class="section">取込履歴</div><div id="imports"></div></div>
+</section>
+<section class="page" id="live">
+<div class="card"><div class="section">実績入力 <small>日付ズレ修正版</small></div><div class="datefix">日付は端末のローカル日付をそのまま使用し、UTC変換による1日ズレを起こさない方式に変更。</div><div class="grid2"><div class="field"><label>機種</label><select id="liveModel">
+<option value="ghoul">L 東京喰種</option>
+<option value="lycoreco">スマスロ リコリス・リコイル</option>
+<option value="kabaneri2">スマスロ カバネリ 海門決戦</option>
+<option value="sao2">スロット SAOⅡ</option>
+</select></div><div class="field"><label>実戦日</label><input id="playDate" type="date"></div></div>
+<div class="field"><label>台番号</label><input id="liveMachineText" inputmode="numeric" placeholder="例：0761"><select id="liveMachine" style="display:none"></select><div class="live-model-note" id="liveModelNote">機種を変えると、見るべき設定判別ポイントも切り替わります。</div></div><div class="grid2"><div class="field"><label>液晶G / CZ間</label><input id="lcd" type="number" inputmode="numeric"></div><div class="field"><label>AT間G</label><input id="atg" type="number" inputmode="numeric"></div></div><div class="grid2"><div class="field"><label>CZ回数</label><input id="cz" type="number" inputmode="numeric"></div><div class="field"><label>AT初当り</label><input id="at" type="number" inputmode="numeric"></div></div><div class="grid2"><div class="field"><label>直撃</label><input id="direct" type="number" inputmode="numeric"></div><div class="field"><label>差枚</label><input id="diff" type="number" inputmode="numeric"></div></div><div class="field"><label>示唆・終了画面・メモ</label><textarea id="memo" rows="3" placeholder="例：強い示唆あり / 朝一挙動 / 終了画面"></textarea></div><button class="primary" id="savePlay">実績を保存して判断更新</button></div>
 
-  <div class="card">
-    <div class="section-title">現在の実戦判断</div>
-    <div class="judge">
-      <div class="eyebrow">CURRENT CHECK</div>
-      <div class="big" id="judgeMain">材料待ち</div>
-      <p id="judgeReason">実戦画面でG数や当選を入力すると、確認ポイントを表示します。</p>
-    </div>
-    <div class="metrics" style="margin-top:10px">
-      <div class="metric"><span>CZ 600Gまで</span><b class="blue" id="czRemain">—</b></div>
-      <div class="metric"><span>リセ200Gまで</span><b class="yellow" id="resetRemain">—</b></div>
-      <div class="metric"><span>AT 1200Gまで</span><b class="pink" id="atRemain">—</b></div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="section-title">設定判別の材料</div>
-    <div class="metrics">
-      <div class="metric"><span>AT直撃</span><b id="directCount">0</b></div>
-      <div class="metric"><span>通常EPB</span><b id="epbCount">0</b></div>
-      <div class="metric"><span>強い示唆</span><b id="hintCount">0</b></div>
-    </div>
-    <p class="notice" id="sampleNote" style="margin-top:10px">まだサンプル不足です。回数を蓄積して材料として比較します。</p>
-  </div>
+<div class="card">
+  <div class="section">🎯 この機種で今見るもの <small>V5機種連動</small></div>
+  <div id="liveMachineGuide" class="reason"></div>
+</div>
 
-  <div class="card">
-    <div class="section-title">前日データ一覧</div>
-    <div class="table-wrap"><table><thead><tr><th>台</th><th>BONUS</th><th>累計G</th><th>最大</th><th>グラフ</th></tr></thead><tbody id="prevTable"></tbody></table></div>
+<div class="card" id="hintLibrary">
+  <div class="section">🖼️ 設定示唆・終了画面 <small>画像タップ入力</small></div>
+  <div class="datefix">出た画面を画像で確認して「＋」を押すだけ。回数は台番号＋実戦日ごとに保存し、設定推測へ反映します。</div>
+  <div class="hint-tabs" id="hintTabs">
+    <button class="hint-tab on" data-hgroup="atend">AT終了</button>
+    <button class="hint-tab" data-hgroup="czend">CZ終了</button>
+    <button class="hint-tab" data-hgroup="invite">月山招待状</button>
+    <button class="hint-tab" data-hgroup="trophy">トロフィー</button>
+    <button class="hint-tab" data-hgroup="payout">獲得枚数</button>
+    <button class="hint-tab" data-hgroup="ending">EDカード</button>
   </div>
+  <div id="hintGroups"></div>
+  <div class="hint-summary">
+    <div class="muted">チャッピー設定推測</div>
+    <div class="headline" id="hintEstimateTitle">示唆データ待ち</div>
+    <div id="hintEstimateReason" class="muted" style="margin-top:5px;line-height:1.6">画像の「＋」を押すと更新します。</div>
+    <div class="setting-bars" id="settingBars"></div>
+  </div>
+  <div class="source-note">
+    画像・解析出典：
+    <a href="https://1geki.jp/slot/l_tokyoghoul/0/" target="_blank" rel="noopener">一撃「L 東京喰種 設定差・終了画面」</a>。
+    同ページの案内に従い引用元リンクを掲載。ナミちゃんトロフィーは
+    <a href="https://nana-press.com/kaiseki/machine/889/27735/" target="_blank" rel="noopener">なな徹</a>
+    を参照。トロフィー示唆は同サイトでも「他機種を参考」と明記されているため参考情報扱いです。
+  </div>
+</div>
+
+<div class="card"><div class="section">現在の判断</div><div id="liveJudge" class="reason"><b>データ待ち</b><p>実戦データを保存すると、設定狙いと天井・リセット狙いを分けて理由を表示します。</p></div></div>
+<div class="card"><div class="section">保存した実績</div><div id="plays"></div></div>
 </section>
 
-<section class="page" id="history">
-  <div class="card">
-    <div class="section-title">実戦レポート</div>
-    <div class="metrics">
-      <div class="metric"><span>保存実戦</span><b class="blue" id="sessionCount">0</b></div>
-      <div class="metric"><span>入力差枚合計</span><b class="green" id="totalDiff">0</b></div>
-      <div class="metric"><span>入力投資合計</span><b class="yellow" id="totalInv">0</b></div>
-    </div>
+<div class="card" id="setting-history">
+  <div class="section-title">🧠 過去7日間の設定推測 <small>日別・台別</small></div>
+  <div class="notice" style="margin-bottom:10px">
+    BONUS回数だけの日は設定を断定せず「判定保留（低信頼）」で表示します。
+    総G・初当り・CZ・直撃・示唆・差枚などが揃った日ほど推測レンジを絞ります。
   </div>
-  <div class="card">
-    <div class="section-title">保存した実戦</div>
-    <div id="historyList"></div>
+  <div class="field">
+    <label>台番号</label>
+    <select id="settingHistoryMachine"></select>
   </div>
-  <details>
-    <summary>⚙ データ管理</summary>
-    <div class="inside">
-      <button class="secondary" id="exportBtn">JSONバックアップを書き出す</button>
-      <button class="secondary danger" id="clearCurrent" style="margin-top:8px">現在の入力だけリセット</button>
-    </div>
-  </details>
-</section>
+  <div id="settingHistoryList"></div>
+</div>
+
 </main>
-
-<nav class="bottom">
-  <button class="tab on" data-go="home"><span>⌂</span>ホーム</button>
-  <button class="tab" data-go="live"><span>✍️</span>実戦</button>
-  <button class="tab" data-go="analysis"><span>◎</span>分析</button>
-  <button class="tab" data-go="history"><span>▥</span>履歴</button>
-</nav>
-<div class="toast" id="toast"></div>
-
+<nav class="bottom"><button class="tab on" data-go="home"><span>⌂</span>ホーム</button><button class="tab" data-go="analysis"><span>🎯</span>分析</button><button class="tab" data-go="trends"><span>📈</span>7日</button><button class="tab" data-go="encyclopedia"><span>📚</span>図鑑</button><button class="tab" data-go="live"><span>🎰</span>実戦</button></nav><div class="toast" id="toast"></div>
 <script>
-const PREV=[
- ['0753',23,1860,0,'V字回復'],
- ['0755',24,3536,0,'下降'],
- ['0756',53,1298,12817,'強い上昇'],
- ['0757',9,1205,455,'下降'],
- ['0758',14,1668,349,'下降'],
- ['0760',25,2854,744,'下降'],
- ['0761',46,2580,6995,'V字上昇'],
- ['0762',35,3692,2511,'一撃後失速'],
- ['0763',20,972,3567,'上昇後失速'],
- ['0765',9,1278,369,'下降']
+const machines=['0752','0753','0755','0756','0757','0758','0760','0761','0762','0763','0765'];
+const dates=['9/11(金)','9/12(土)','9/13(日)','9/14(月)','9/15(火)','9/16(水)','9/17(木)'];
+const seven={
+'0752':[null,null,null,null,null,null,22],
+'0753':[7,26,28,36,10,23,13],
+'0755':[35,44,44,21,38,24,12],
+'0756':[20,35,26,50,91,53,12],
+'0757':[18,13,13,16,43,9,19],
+'0758':[27,21,57,30,32,14,22],
+'0760':[18,35,34,42,37,25,33],
+'0761':[19,16,74,29,95,46,16],
+'0762':[25,20,31,19,29,35,44],
+'0763':[50,73,18,39,31,20,10],
+'0765':[30,17,31,31,33,9,44]
+};
+const detailsToday={
+'0752':{big:13,reg:9,total:1535,last:175,max:1478},'0753':{big:6,reg:7,total:1410,last:84,max:360},'0755':{big:5,reg:7,total:1587,last:53,max:190},'0756':{big:6,reg:6,total:1390,last:125,max:521},'0757':{big:10,reg:9,total:2770,last:14,max:760},'0758':{big:12,reg:10,total:2486,last:22,max:489}
+};
+const ranking=[
+{m:'0761',s:78,why:'7日内に大きな山が複数。直近は16回まで落ちているため、店の「反動・ずらし」傾向と並びを確認して候補化。'},
+{m:'0756',s:76,why:'9/15に91回、9/16に53回と強い履歴。今日は12回。強かった台を再投入する店か、隣へずらす店かを朝一で確認。'},
+{m:'0763',s:72,why:'9/11=50、9/12=73と強い日がある一方、直近は20→10。過去の再上昇パターンがあるか今後のデータで検証。'},
+{m:'0760',s:69,why:'7日を通して18〜42回で比較的安定。極端な一撃だけに依存していないか、グラフと総Gで確認したい。'},
+{m:'0755',s:67,why:'44回が連続した履歴あり。直近は24→12と下降。上げ直し候補として監視するが、BONUSだけでは設定判断しない。'}
 ];
-const TYPES=['CZ','AT','AT直撃','通常EPB','招待状','強い示唆'];
-const FLAGS=['リセット挙動','200G+αまでCZ','200G+α超えCZなし','100G東京上空なし','AT駆け抜け','有馬J失敗後'];
-const K='pdv2', H='pdv2hist';
-const $=id=>document.getElementById(id);
-const n=v=>Number(v)||0;
-const today=()=>new Date().toISOString().slice(0,10);
-
-let x;
-try{x=JSON.parse(localStorage.getItem(K)||'null')}catch(e){}
-x=x||{machine:'0756',tag:'8のつく日',lcd:'',atg:'',inv:'',diff:'',memo:'',events:[],flags:{}};
-if(!x.events)x.events=[];
-if(!x.flags)x.flags={};
-if(!x.playDate)x.playDate=today();
-
-let hist=[];
-try{hist=JSON.parse(localStorage.getItem(H)||'[]')}catch(e){hist=[]}
-
-function persist(){
-  localStorage.setItem(K,JSON.stringify(x));
-  render();
-}
-function toast(msg){
-  const t=$('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),1500);
-}
-function go(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(p=>p.classList.remove('on'));
-  $(id).classList.add('on');
-  const tab=document.querySelector('.tab[data-go="'+id+'"]'); if(tab)tab.classList.add('on');
-  scrollTo({top:0,behavior:'smooth'}); render();
-}
+function localISO(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
+function tomorrowLabel(){const d=new Date();d.setDate(d.getDate()+1);return `${d.getMonth()+1}/${d.getDate()}(${['日','月','火','水','木','金','土'][d.getDay()]})`}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('on',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.go===id));scrollTo({top:0,behavior:'smooth'});if(id==='trends')setTimeout(drawTrend,50);if(id==='encyclopedia')setTimeout(()=>{renderBookPills();renderBook()},20)}
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+function fillSelect(id){const e=document.getElementById(id);e.innerHTML=machines.map(m=>`<option>${m}</option>`).join('')}
+['estMachine','liveMachine'].forEach(fillSelect);document.getElementById('playDate').value=localISO();document.getElementById('todayBadge').textContent=`次回分析：${tomorrowLabel()} ｜ NEW YORK×2 広面`;
+function renderRanking(){document.getElementById('ranking').innerHTML=ranking.map((r,i)=>`<div class="rank"><div class="medal">${i+1}</div><div class="rmain"><b>${r.m}</b><small>${r.why}</small></div><div class="score"><b>${r.s}</b><small>暫定指数</small></div></div>`).join('')}
+function renderTable(){let h='<tr><th>台</th>'+dates.map(d=>`<th>${d}</th>`).join('')+'<th>平均</th></tr>';machines.forEach(m=>{const a=seven[m];const vals=a.filter(v=>v!=null);const avg=vals.length?(vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1):'-';h+=`<tr><td>${m}</td>`+a.map(v=>`<td class="${v>=50?'hot':v!=null&&v<=12?'cool':''}">${v??'-'}</td>`).join('')+`<td>${avg}</td></tr>`});document.getElementById('sevenTable').innerHTML=h}
+let selected='0761';
+function renderTabs(){document.getElementById('machineTabs').innerHTML=machines.map(m=>`<button class="mtab ${m===selected?'on':''}" data-m="${m}">${m}</button>`).join('');document.querySelectorAll('.mtab').forEach(b=>b.onclick=()=>{selected=b.dataset.m;renderTabs();drawTrend();renderTrendSummary()})}
+function drawTrend(){const c=document.getElementById('trendCanvas');if(!c)return;const r=c.getBoundingClientRect(),dpr=devicePixelRatio||1;c.width=r.width*dpr;c.height=r.height*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);const w=r.width,h=r.height,p=25;x.clearRect(0,0,w,h);x.strokeStyle='#1d3048';x.lineWidth=1;[0,25,50,75,100].forEach(v=>{const y=h-p-(v/100)*(h-2*p);x.beginPath();x.moveTo(p,y);x.lineTo(w-8,y);x.stroke();x.fillStyle='#6f849d';x.font='8px sans-serif';x.fillText(v,2,y+3)});const a=seven[selected];const pts=[];a.forEach((v,i)=>{if(v==null)return;const px=p+i*(w-p-12)/6,py=h-p-(Math.min(v,100)/100)*(h-2*p);pts.push([px,py,v,i])});if(pts.length){x.strokeStyle='#18c8ff';x.lineWidth=2.5;x.beginPath();pts.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]));x.stroke();pts.forEach(q=>{x.fillStyle=q[2]>=50?'#ff356d':'#18c8ff';x.beginPath();x.arc(q[0],q[1],3.5,0,Math.PI*2);x.fill()})}dates.forEach((d,i)=>{x.fillStyle='#6f849d';x.font='7px sans-serif';x.fillText(d.split('(')[0],p+i*(w-p-12)/6-8,h-7)})}
+function renderTrendSummary(){const a=seven[selected],vals=a.filter(v=>v!=null),avg=vals.reduce((x,y)=>x+y,0)/vals.length,max=Math.max(...vals),maxi=a.indexOf(max);document.getElementById('trendSummary').innerHTML=`<b>${selected}｜7日傾向</b><p>有効${vals.length}日・平均BONUS ${avg.toFixed(1)}回。最大は${dates[maxi]}の${max}回。これは出玉の強弱を見る補助材料で、設定推測には総G・差枚・初当り・示唆を追加して判断します。</p>`}
+function estimateFor(m,i){const v=seven[m][i];if(v==null)return {range:'データなし',cls:'low',conf:'—',why:'当日の履歴がありません'};if(i===6&&detailsToday[m]){const d=detailsToday[m];let txt='判定保留',cls='low';if(d.total>=2500&&v>=30){txt='2〜4候補';cls='mid'}else if(d.total>=2000&&v>=20){txt='2〜4候補';cls='mid'}return {range:txt,cls,conf:'低',why:`BONUS ${v}回 / ${d.total}G / 最大放出 ${d.max}。機種固有の初当り・CZ・示唆が不足。`}}
+return {range:'判定保留',cls:'low',conf:'低',why:`BONUS ${v}回のみ。回転数や差枚が無いため設定レンジを狭めない。`}}
+function renderEstimates(){const m=document.getElementById('estMachine').value;document.getElementById('estimates').innerHTML=dates.map((d,i)=>{const e=estimateFor(m,i);return `<div class="estimate"><div class="estMain"><b>${d}　BONUS ${seven[m][i]??'-'}</b><small>${e.why}</small></div><div><div class="range ${e.cls}">${e.range}</div><div class="confidence">信頼度 ${e.conf}</div></div></div>`}).join('')}
+document.getElementById('estMachine').onchange=renderEstimates;
+function renderImports(){const a=JSON.parse(localStorage.getItem('pdv4imports')||'[]');document.getElementById('imports').innerHTML=a.length?a.slice().reverse().map(x=>`<div class="reason"><b>${x.name}</b><p>${x.date} に登録｜${x.size}</p></div>`).join(''):'<div class="muted" style="font-size:9px">まだ取込履歴はありません。</div>'}
+document.getElementById('pdfFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const a=JSON.parse(localStorage.getItem('pdv4imports')||'[]');a.push({name:f.name,size:(f.size/1024).toFixed(0)+'KB',date:localISO()});localStorage.setItem('pdv4imports',JSON.stringify(a));document.getElementById('fileStatus').innerHTML=`<b>PDFを登録しました</b><p>${f.name}｜次段階ではこのPDFから台番号・7日履歴・総G・最大放出を自動抽出します。</p>`;renderImports();toast('PDFを登録しました')}
+function renderPlays(){const a=JSON.parse(localStorage.getItem('pdv4plays')||localStorage.getItem('pdv2hist')||'[]');document.getElementById('plays').innerHTML=a.length?a.slice().reverse().slice(0,20).map(x=>`<div class="reason"><b>${x.date||x.playDate||'-'}｜${x.machine||'-'}番台</b><p>CZ ${x.cz||0} / AT ${x.at||0} / 直撃 ${x.direct||0} / 差枚 ${x.diff||0}<br>${x.memo||''}</p></div>`).join(''):'<div class="muted" style="font-size:9px">実績はまだありません。</div>'}
+document.getElementById('savePlay').onclick=()=>{const g=id=>document.getElementById(id).value;const rec={date:g('playDate'),machine:g('liveMachine'),lcd:+g('lcd')||0,atg:+g('atg')||0,cz:+g('cz')||0,at:+g('at')||0,direct:+g('direct')||0,diff:+g('diff')||0,memo:g('memo')};const a=JSON.parse(localStorage.getItem('pdv4plays')||'[]');a.push(rec);localStorage.setItem('pdv4plays',JSON.stringify(a));let title='様子見',msg='設定材料がまだ少ないため、CZ/AT初当り・直撃・示唆を追加して判断。';if(rec.direct>0||/強|確定|高設定/.test(rec.memo)){title='続行寄り';msg='直撃または強い示唆を記録。機種固有の設定差と照合しながら続行判断。'}if(rec.atg>=900){title='天井・AT間を優先確認';msg='AT間G数が深いため、設定狙いとは別に天井/ゾーン狙いの条件を確認。'}document.getElementById('liveJudge').innerHTML=`<b>${title}</b><p>${msg}</p>`;renderPlays();toast('実績を保存しました')}
+renderRanking();renderTable();renderTabs();renderTrendSummary();renderEstimates();renderImports();renderPlays();
 
-function score(m){
-  let s=40;
-  if(m[4].includes('上昇')||m[4].includes('回復'))s+=15;
-  if(m[3]>=3000)s+=8;
-  if(m[2]>=2500)s+=3;
-  if(m[4]==='下降')s-=7;
-  return s;
-}
-function eventCount(type){return x.events.filter(e=>e.t===type).length}
-function render(){
-  ['machine','playDate','lcd','atg','inv','diff','memo'].forEach(id=>{
-    const el=$(id); if(el && document.activeElement!==el) el.value=x[id]??'';
-  });
-  TYPES.forEach(type=>{
-    const b=document.querySelector('[data-event="'+type+'"] b');
-    if(b)b.textContent=eventCount(type);
-  });
-  document.querySelectorAll('[data-flag]').forEach(b=>b.classList.toggle('on',!!x.flags[b.dataset.flag]));
+const settingHistoryData = {
+ "0752":[22,null,null,null,null,null,null],
+ "0753":[13,23,10,36,28,26,7],
+ "0755":[12,24,38,21,44,44,35],
+ "0756":[12,53,91,50,26,35,20],
+ "0757":[19,9,43,16,13,13,18],
+ "0758":[22,14,32,30,57,21,27],
+ "0760":[33,25,37,42,34,35,18],
+ "0761":[16,46,95,29,74,16,19],
+ "0762":[44,35,29,19,31,20,25],
+ "0763":[10,20,31,39,18,73,50],
+ "0765":[44,9,33,31,31,17,30]
+};
+const settingHistoryDates=["9/17","9/16","9/15","9/14","9/13","9/12","9/11"];
 
-  const l=n(x.lcd), a=n(x.atg);
-  $('czRemain').textContent=l?Math.max(0,600-l)+'G+α':'—';
-  $('resetRemain').textContent=l?Math.max(0,200-l)+'G+α':'—';
-  $('atRemain').textContent=a?Math.max(0,1200-a)+'G+α':'—';
-
-  let main='材料待ち', reason='G数・朝一挙動・当選を入力すると確認ポイントを表示します。';
-  if(x.flags['有馬J失敗後']){main='100G+αを確認候補';reason='有馬J失敗後の入力があります。状態を確認しながら判断。'}
-  else if(a>=650){main='AT間G数を意識';reason='AT間 '+a+'G。天井距離を確認しながら判断。'}
-  else if(l>=360){main='CZ間G数を意識';reason='液晶 '+l+'G。CZ間の進行を確認。'}
-  else if(x.flags['200G+α超えCZなし']){main='リセット前提は弱め';reason='朝一200G+α超えCZなしの記録があります。'}
-  else if(x.flags['リセット挙動']||x.flags['200G+αまでCZ']){main='朝一材料あり';reason='リセット寄りの材料を記録中。単独で断定せず他材料と合わせて確認。'}
-  $('judgeMain').textContent=main;$('judgeReason').textContent=reason;
-
-  $('directCount').textContent=eventCount('AT直撃');
-  $('epbCount').textContent=eventCount('通常EPB');
-  $('hintCount').textContent=eventCount('強い示唆');
-  $('sampleNote').textContent=x.events.length<6?'まだサンプル不足です。回数を蓄積して材料として比較します。':'記録が増えてきました。単独の数値ではなく複数材料を合わせて確認します。';
-
-  $('sessionCount').textContent=hist.length;
-  const td=hist.reduce((s,v)=>s+n(v.diff),0), ti=hist.reduce((s,v)=>s+n(v.inv),0);
-  $('totalDiff').textContent=(td>0?'+':'')+td+'枚';
-  $('totalInv').textContent=ti+'千';
-
-  $('homeState').textContent=x.events.length?'#'+x.machine+'｜記録 '+x.events.length+'件':'入力準備OK';
-
-  $('historyList').innerHTML=hist.length?hist.slice().reverse().map((s,i)=>{
-    const d=n(s.diff), cls=d>0?'green':d<0?'pink':'';
-    return '<div class="history-item"><b>#'+(s.machine||'—')+' <span class="'+cls+'">'+(d>0?'+':'')+d+'枚</span></b><small>'+(s.playDate||'日付未設定')+'｜液晶 '+n(s.lcd)+'G｜AT間 '+n(s.atg)+'G｜記録 '+((s.events||[]).length)+'件</small></div>'
-  }).join(''):'<div class="empty">まだ保存した実戦はありません</div>';
+function historyEstimate(machine, idx, bonus){
+  if(bonus==null) return {label:"データなし", reason:"この日の履歴がありません", conf:"low", confText:"—"};
+  // Only 9/17 has some separate detail-PDF fields in the current imported sample.
+  // BONUS alone is insufficient to infer a slot setting, so older dates remain explicitly unresolved.
+  if(idx>0) return {
+    label:"判定保留",
+    reason:`BONUS ${bonus}回のみ。総G・初当り・CZ・直撃・示唆・差枚が不足`,
+    conf:"low", confText:"低信頼"
+  };
+  return {
+    label:"暫定推測",
+    reason:`本日BONUS ${bonus}回。詳細PDF・実戦データを追加すると設定1〜6のレンジを更新`,
+    conf:"mid", confText:"暫定"
+  };
 }
 
-$('machine').innerHTML=PREV.map(m=>'<option value="'+m[0]+'">#'+m[0]+'</option>').join('');
-$('quick').innerHTML=TYPES.map(t=>'<button class="q" data-event="'+t+'">'+t+' <b>0</b></button>').join('');
-$('chips').innerHTML=FLAGS.map(f=>'<button class="chip" data-flag="'+f+'">'+f+'</button>').join('');
-
-$('ranking').innerHTML=PREV.slice().sort((a,b)=>score(b)-score(a)).slice(0,5).map((m,i)=>
- '<div class="rank"><div class="medal">'+(i<3?['♛','2','3'][i]:i+1)+'</div>'+
- '<div class="rmain"><b>#'+m[0]+'</b><small>前日 '+m[1]+'回｜'+m[2]+'G｜'+m[4]+'</small></div>'+
- '<div class="score"><b>'+score(m)+'</b><small>チェック点</small></div></div>'
-).join('');
-
-$('prevTable').innerHTML=PREV.map(m=>
- '<tr><td>#'+m[0]+'</td><td>'+m[1]+'</td><td>'+m[2]+'</td><td>'+(m[3]||'—')+'</td><td>'+m[4]+'</td></tr>'
-).join('');
-
-['machine','playDate','lcd','atg','inv','diff','memo'].forEach(id=>{
-  $(id).addEventListener('input',()=>{x[id]=$(id).value;persist()});
-});
-document.querySelectorAll('[data-event]').forEach(b=>b.onclick=()=>{
-  x.events.push({t:b.dataset.event,time:Date.now(),lcd:n(x.lcd),atg:n(x.atg)});
-  persist();toast(b.dataset.event+' を記録');
-});
-document.querySelectorAll('[data-flag]').forEach(b=>b.onclick=()=>{
-  x.flags[b.dataset.flag]=!x.flags[b.dataset.flag];persist();
-});
-$('undo').onclick=()=>{
-  const last=x.events.pop();persist();toast(last?last.t+' を取り消しました':'記録はありません');
-};
-$('saveSession').onclick=()=>{
-  hist.push({...x,savedAt:Date.now()});
-  localStorage.setItem(H,JSON.stringify(hist));
-  const keepMachine=x.machine;
-  x={machine:keepMachine,tag:'8のつく日',playDate:today(),lcd:'',atg:'',inv:'',diff:'',memo:'',events:[],flags:{}};
-  persist();toast('実戦を保存しました');setTimeout(()=>go('history'),500);
-};
-$('exportBtn').onclick=()=>{
-  const blob=new Blob([JSON.stringify({current:x,history:hist,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='pachidata-navi-backup.json';a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('バックアップを作成');
-};
-$('clearCurrent').onclick=()=>{
-  if(confirm('現在入力中のデータだけリセットしますか？')){
-    const keep=x.machine;
-    x={machine:keep,tag:'8のつく日',playDate:today(),lcd:'',atg:'',inv:'',diff:'',memo:'',events:[],flags:{}};
-    persist();toast('現在入力をリセットしました');
+function renderSettingHistory(){
+  const sel=document.getElementById("settingHistoryMachine");
+  const out=document.getElementById("settingHistoryList");
+  if(!sel||!out) return;
+  if(!sel.options.length){
+    Object.keys(settingHistoryData).forEach(m=>{
+      const o=document.createElement("option"); o.value=m; o.textContent=m+"番台"; sel.appendChild(o);
+    });
+    sel.addEventListener("change",renderSettingHistory);
   }
+  const m=sel.value||Object.keys(settingHistoryData)[0];
+  const vals=settingHistoryData[m]||[];
+  out.innerHTML=settingHistoryDates.map((d,i)=>{
+    const e=historyEstimate(m,i,vals[i]);
+    return `<div class="setting-day">
+      <div class="setting-date">${d}</div>
+      <div class="setting-est">${e.label}<small>${e.reason}</small></div>
+      <div class="conf ${e.conf}">${e.confText}</div>
+    </div>`;
+  }).join("");
+}
+setTimeout(renderSettingHistory,0);
+
+
+const hintDefs = {
+  atend:[
+    ["at_default","金木研","基本パターン","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou51.png?f=webp","none"],
+    ["at_odd","亜門鋼太朗＆真戸暁","奇数設定示唆","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou52.png?f=webp","odd"],
+    ["at_even","鈴屋什造＆篠原幸紀","偶数設定示唆","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou53.png?f=webp","even"],
+    ["at_no1","神代利世","設定1否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou54.png?f=webp","no1"],
+    ["at_hiweak","笛口雛実＆笛口リョーコ","高設定示唆（弱）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou55.png?f=webp","hiweak"],
+    ["at_histrong","ウタ＆イトリ＆四方蓮示","高設定示唆（強）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou56.png?f=webp","histrong"],
+    ["at_4up","金木研＆霧嶋董香（金枠）","設定4以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou57.png?f=webp","min4"],
+    ["at_6","あんていく全員集合（虹枠）","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou58.png?f=webp","six"]
+  ],
+  czend:[
+    ["cz_even","鈴屋什造（赤枠）","設定2・4・6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou69.png?f=webp","evenOnly"],
+    ["cz_4up","梟（金枠）","設定4以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou70.png?f=webp","min4"],
+    ["cz_6","有馬貴将（虹枠）","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou71.png?f=webp","six"]
+  ],
+  invite:[
+    ["inv_even","偶にはディナーでもどうだい？","偶数設定示唆","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou81.png?f=webp","even"],
+    ["inv_no1","不思議な香りだ…","設定1否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou82.png?f=webp","no1"],
+    ["inv_no2","君はなかなかの活字中毒らしいね","設定2否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou83.png?f=webp","no2"],
+    ["inv_no3","本は良いよね…","設定3否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou84.png?f=webp","no3"],
+    ["inv_no4","僕としたことがすまない","設定4否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou85.png?f=webp","no4"],
+    ["inv_4up","存分に楽しもうじゃないか（金背景）","設定4以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou86.png?f=webp","min4"],
+    ["inv_6","特別な夜を楽しもうじゃないか（虹背景）","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou87.png?f=webp","six"]
+  ],
+  trophy:[
+    ["tr_black","ナミちゃん 黒","次回終了画面でトロフィー出現","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","none"],
+    ["tr_bronze","ナミちゃん 銅","設定2以上（参考）","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","min2"],
+    ["tr_silver","ナミちゃん 銀","設定3以上（参考）","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","min3"],
+    ["tr_gold","ナミちゃん 金","設定4以上（参考）","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","min4"],
+    ["tr_special","ナミちゃん 特殊（喰）","設定5以上（参考）","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","min5"],
+    ["tr_rainbow","ナミちゃん 虹","設定6（参考）","https://image.nana-press.com/kaiseki/machine/889/20260317155050_69b8f9cae1777.jpg","six"]
+  ],
+  payout:[
+    ["pay456","456OVER","設定4以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou94.png?f=webp","min4"],
+    ["pay666","666OVER","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou95.png?f=webp","six"],
+    ["pay993","1000-7OVER（993枚時）","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou96.png?f=webp","six"]
+  ],
+  ending:[
+    ["ed_oddw","白カード 弱グループ","奇数設定示唆（弱）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","odd"],
+    ["ed_odds","白カード 強グループ","奇数設定示唆（強）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","oddStrong"],
+    ["ed_evenw","青カード 弱グループ","偶数設定示唆（弱）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","even"],
+    ["ed_evens","青カード 強グループ","偶数設定示唆（強）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","evenStrong"],
+    ["ed_hiw","赤カード 弱グループ","高設定示唆（弱）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","hiweak"],
+    ["ed_his","赤カード 強グループ","高設定示唆（強）","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","histrong"],
+    ["ed_no1","銅・鈴屋什造","設定1否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","no1"],
+    ["ed_no2","銅・高槻泉","設定2否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","no2"],
+    ["ed_no3","銅・隻眼の梟","設定3否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","no3"],
+    ["ed_no4","銅・エト","設定4否定","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","no4"],
+    ["ed_3up","銀・金木研","設定3以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","min3"],
+    ["ed_4up","金・神代利世","設定4以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","min4"],
+    ["ed_5up","金・隻眼の梟","設定5以上","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","min5"],
+    ["ed_6","虹・有馬貴将","設定6","https://images.1geki.jp/machines/slot/l_tokyoghoul/l_tokyoghoul_ekishou101.png?f=webp","six"]
+  ]
 };
-render();
+
+function hintKey(){
+  const m=document.getElementById("liveMachine")?.value||"0752";
+  const d=document.getElementById("playDate")?.value||localYMD();
+  return "pdv42hints:"+d+":"+m;
+}
+function getHintCounts(){try{return JSON.parse(localStorage.getItem(hintKey())||"{}")}catch(e){return {}}}
+function setHintCounts(v){localStorage.setItem(hintKey(),JSON.stringify(v))}
+function allHintDefs(){return Object.values(hintDefs).flat()}
+
+function renderHintGroups(){
+  const root=document.getElementById("hintGroups"); if(!root)return;
+  const counts=getHintCounts();
+  root.innerHTML=Object.entries(hintDefs).map(([g,items],gi)=>`
+    <div class="hint-group ${gi===0?'on':''}" data-group="${g}">
+      <div class="hint-grid">${items.map(x=>`
+        <div class="hint-card">
+          <img src="${x[3]}" alt="${x[1]}" loading="lazy" onerror="this.style.display='none'">
+          <div class="hint-body">
+            <div class="hint-name">${x[1]}</div>
+            <div class="hint-effect">${x[2]}</div>
+            <div class="hint-count">
+              <button type="button" data-hminus="${x[0]}">−</button>
+              <b id="hc_${x[0]}">${counts[x[0]]||0}</b>
+              <button type="button" data-hplus="${x[0]}">＋</button>
+            </div>
+          </div>
+        </div>`).join("")}
+      </div>
+    </div>`).join("");
+  root.querySelectorAll("[data-hplus]").forEach(b=>b.onclick=()=>changeHint(b.dataset.hplus,1));
+  root.querySelectorAll("[data-hminus]").forEach(b=>b.onclick=()=>changeHint(b.dataset.hminus,-1));
+  updateHintEstimate();
+}
+function changeHint(id,delta){
+  const c=getHintCounts(); c[id]=Math.max(0,(c[id]||0)+delta); setHintCounts(c);
+  const el=document.getElementById("hc_"+id); if(el)el.textContent=c[id];
+  updateHintEstimate();
+}
+function updateHintEstimate(){
+  const counts=getHintCounts(), defs=allHintDefs();
+  let w=[0,1,1,1,1,1,1], meaningful=0, hard=false, notes=[];
+  const apply=(rule,n,label)=>{
+    if(!n)return; meaningful+=n;
+    if(rule==="none")return;
+    if(rule==="odd"){w[1]*=1+0.25*n;w[3]*=1+0.25*n;w[5]*=1+0.25*n}
+    if(rule==="oddStrong"){w[1]*=1+0.5*n;w[3]*=1+0.5*n;w[5]*=1+0.5*n}
+    if(rule==="even"){w[2]*=1+0.25*n;w[4]*=1+0.25*n;w[6]*=1+0.25*n}
+    if(rule==="evenStrong"){w[2]*=1+0.5*n;w[4]*=1+0.5*n;w[6]*=1+0.5*n}
+    if(rule==="hiweak"){for(let s=4;s<=6;s++)w[s]*=1+0.25*n}
+    if(rule==="histrong"){for(let s=4;s<=6;s++)w[s]*=1+0.55*n}
+    if(rule==="evenOnly"){[1,3,5].forEach(s=>w[s]=0);hard=true;notes.push(label)}
+    if(rule.startsWith("no")){const s=+rule.slice(2);w[s]=0;hard=true;notes.push(label)}
+    if(rule.startsWith("min")){const min=+rule.slice(3);for(let s=1;s<min;s++)w[s]=0;hard=true;notes.push(label)}
+    if(rule==="six"){for(let s=1;s<=5;s++)w[s]=0;hard=true;notes.push(label)}
+  };
+  defs.forEach(x=>apply(x[4],counts[x[0]]||0,x[1]+"："+x[2]));
+  const title=document.getElementById("hintEstimateTitle"), reason=document.getElementById("hintEstimateReason"), bars=document.getElementById("settingBars");
+  if(!title||!reason||!bars)return;
+  if(!meaningful){
+    title.textContent="示唆データ待ち";
+    reason.textContent="終了画面・招待状・トロフィーなどを登録すると設定1〜6の参考配分を表示します。";
+    bars.innerHTML="";
+    return;
+  }
+  const sum=w.slice(1).reduce((a,b)=>a+b,0)||1;
+  const pct=w.map((v,i)=>i?Math.round(v/sum*100):0);
+  let max=Math.max(...pct.slice(1)), top=pct.findIndex(v=>v===max);
+  const alive=[];for(let s=1;s<=6;s++)if(w[s]>0)alive.push(s);
+  title.textContent=alive.length===1?`設定${alive[0]}示唆を登録`:`設定${top}寄り｜候補 ${alive.join("・")}`;
+  reason.textContent=(hard?`強い示唆を優先して候補設定を除外。`:`弱/強示唆を重み付けした参考推測。`)+(notes.length?` 根拠：${notes.slice(-3).join(" / ")}`:"")+" ※表示%は実際の設定確率を保証するものではありません。";
+  bars.innerHTML=[1,2,3,4,5,6].map(s=>`<div class="setting-bar"><b>設定${s}</b><div class="setting-track"><div class="setting-fill" style="width:${pct[s]}%"></div></div><b>${pct[s]}%</b></div>`).join("");
+}
+
+document.querySelectorAll(".hint-tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".hint-tab").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".hint-group").forEach(x=>x.classList.toggle("on",x.dataset.group===b.dataset.hgroup));
+}));
+["liveMachine","playDate"].forEach(id=>document.getElementById(id)?.addEventListener("change",renderHintGroups));
+setTimeout(renderHintGroups,0);
+
+
+const v5Machines = {
+ ghoul:{
+  short:"東京喰種", name:"L 東京喰種", maker:"CROSSALPHA", intro:"2025/02/03", base:"約31G/50枚", pure:"AT純増 約4.0枚/G",
+  spec:[
+   ["1","1/262.6","1/394.4","97.5%"],["2","1/255.6","1/380.5","99.0%"],["3","1/246.5","1/357.0","101.6%"],
+   ["4","1/233.1","1/325.9","105.6%"],["5","1/216.4","1/291.2","110.3%"],["6","1/203.7","1/261.3","114.9%"]
+  ], specHeads:["設定","CZ","AT初当り","出玉率"],
+  roles:[
+   ["リプレイ","1/7.3"],["斜めベル","1/131.1"],["弱チェリー","1/70.3"],["スイカ","1/100.5"],
+   ["チャンス目A","1/585.1"],["チャンス目B","1/585.1"],["強チェリー","1/356.2"],["喰図柄揃い","1/2048.0"],["確定チェリー","1/16384.0"],["レア役合算","1/31.5"]
+  ],
+  settingRoles:[["1","1/1260.3"],["2","1/1213.6"],["3","1/1170.3"],["4","1/1129.9"],["5","1/1092.3"],["6","1/1024.0"]],
+  settingRoleName:"下段リプレイ",
+  ceilings:["CZ間：液晶600G+α","AT間：実ゲーム1200G+α","AT間の実ゲーム数はメニューで確認"],
+  reset:["朝一は専用のリセット挙動あり","CZ/AT間を分けて管理","終了画面・直撃・引き戻しを同時に記録"],
+  judge:["AT初当り 1/394.4→1/261.3","リプレイ契機AT直撃 1/28460.6→1/7036.8","AT引き戻し 7.81%→15.23%","下段リプレイ 1/1260.3→1/1024.0","通常時初当りEPBにも設定差"],
+  hints:[
+   ["🖼️","AT終了画面","奇数/偶数・高設定弱/強・設定1否定・4以上・6","重要"],
+   ["🏆","ナミちゃんトロフィー","銅/銀/金/特殊(喰)/虹。現状は他機種参考を含む","重要"],
+   ["✉️","月山招待状","偶数示唆・設定否定・4以上・6","重要"],
+   ["🎴","CZ終了カード","偶数・4以上・6など","重要"],
+   ["💰","獲得枚数表示","456OVER / 666OVER / 1000-7OVER","確定系"],
+   ["🌈","エンディングカード","奇偶・高設定・否定・3/4/5以上・6","重要"]
+  ],
+  live:"AT終了画面・トロフィー・月山招待状を最優先で記録。次にAT初当り、直撃、引き戻し、下段リプレイ。BONUS回数だけでは設定を断定しない。",
+  sources:[["一撃 機種解析","https://1geki.jp/slot/l_tokyoghoul/"],["一撃 設定差","https://1geki.jp/slot/l_tokyoghoul/0/"],["一撃 小役","https://1geki.jp/slot/l_tokyoghoul/4/"]]
+ },
+ lycoreco:{
+  short:"リコリコ", name:"スマスロ リコリス・リコイル", maker:"Sammy / 銀座", intro:"2026/09/07", base:"約32G/50枚", pure:"RUSH純増 約8.4枚/G",
+  spec:[
+   ["1","1/198.7","1/328.8","97.9%"],["2","1/196.9","1/323.4","98.9%"],["3","1/191.3","1/312.1","101.3%"],
+   ["4","1/183.3","1/288.3","106.1%"],["5","1/175.9","1/271.6","110.4%"],["6","1/169.4","1/256.7","114.6%"]
+  ], specHeads:["設定","CZ","RUSH","出玉率"],
+  roles:[["共通ベル","設定1 1/95.8 → 設定6 1/79.1"],["幼少期CZ","設定1 1/3965.0 → 設定6 1/2084.8"],["プロローグ直撃","設定1 1/22429.5 → 設定6 1/6263.7"],["その他小役","解析更新中"]],
+  settingRoles:[["1","1/95.8"],["2","調査中"],["3","調査中"],["4","調査中"],["5","調査中"],["6","1/79.1"]],
+  settingRoleName:"共通ベル",
+  ceilings:["AT間：通常 最大850G","RUSH駆け抜け/設定変更後：AT間 最大600G","CZ間：通常 最大600G","駆け抜け/設定変更後：CZ間 最大250G","上位CZ失敗後：AT間 最大250G"],
+  reset:["設定変更後 AT間最大600G","設定変更後 CZ間最大250G","内部状態リセット＋内部G加算抽選あり"],
+  judge:["CZ 1/198.7→1/169.4","RUSH 1/328.8→1/256.7","幼少期CZに大きな差","通常時プロローグ直撃に差","共通ベル 1/95.8→1/79.1","謎Vストック・各種エピソード・上部ランプは解析更新中"],
+  hints:[
+   ["🖼️","RUSH終了画面","私服=高設定示唆弱、ドレス=強、押上=2以上、ロボ太=4以上、ハワイ=6","最重要"],
+   ["🏆","サミートロフィー","銅2以上 / 銀3以上 / 金4以上 / キリン5以上 / 虹6","最重要"],
+   ["🎬","プロローグ/EP","種類で設定示唆。詳細の一部は現在解析中","更新中"],
+   ["💡","筐体上部ランプ","ED中などの発光色で設定示唆。詳細は解析更新中","更新中"],
+   ["🎴","CZ終了アイキャッチ","短縮天井や復活示唆。個別内容は現在調査中","更新中"]
+  ],
+  live:"終了画面とサミートロフィーを必ず記録。共通ベル、CZ、幼少期CZ、直撃プロローグもカウント。新台で解析更新が速いため「調査中」は推測で埋めない。",
+  sources:[["一撃 設定差","https://1geki.jp/slot/l_lycoreco/0/"],["一撃 終了画面","https://1geki.jp/slot/l_lycoreco/6/"],["一撃 天井","https://1geki.jp/slot/l_lycoreco/3/"],["一撃 トロフィー","https://1geki.jp/slot/l_lycoreco/9/"]]
+ },
+ kabaneri2:{
+  short:"カバネリ", name:"スマスロ 甲鉄城のカバネリ 海門決戦", maker:"TAIYO ELEC", intro:"2026/03/02", base:"約31G/50枚", pure:"STタイプ",
+  spec:[
+   ["1","1/254.2","1/422.5","97.5%"],["2","1/242.3","1/405.9","98.5%"],["3","1/239.6","1/398.7","100.8%"],
+   ["4","1/214.0","1/357.2","106.0%"],["5","1/203.2","1/332.6","111.0%"],["6","1/195.1","1/318.5","114.9%"]
+  ], specHeads:["設定","BONUS初当り","ST","出玉率"],
+  roles:[
+   ["無名チャンス目","1/38.9"],["カバネチャンス目","1/77.7"],["生駒チャンス目","1/44.5"],
+   ["複合 無名+カバネ","1/546.1"],["複合 無名+生駒","1/546.1"],["複合 カバネ+生駒","1/546.1"],
+   ["オールスター目","1/7281.0"],["単チャンス目合算","1/16.4"],["複合合算","1/182.0"],["チャンス目合算","1/15.0"]
+  ],
+  settingRoles:[], settingRoleName:"",
+  ceilings:["ゲーム数天井：996G → EPボーナス","周期天井：最大6周期 → EPボーナス","リセット/ST駆け抜け/上位ST後：596G・最大4周期へ短縮"],
+  reset:["設定変更時：596G天井","最大4周期","数Gのランダム加算あり"],
+  judge:["BONUS初当り 1/254.2→1/195.1","ST 1/422.5→1/318.5","アイテムくじに設定否定/高設定/確定系","ST終了画面","サミートロフィー","456/666枚OVER"],
+  hints:[
+   ["🖼️","ST終了画面","デフォルト / 全員集合=高設定示唆 / 無名+菖蒲(水着)=設定6","最重要"],
+   ["🏆","サミートロフィー","銅2以上 / 銀3以上 / 金4以上 / キリン5以上 / 虹6","最重要"],
+   ["🎋","アイテムくじ","否定系・高設定示唆・小吉2以上・中吉4以上・大吉6","最重要"],
+   ["💰","獲得枚数","456枚OVER=4以上 / 666枚OVER=6","確定系"],
+   ["🗣️","ボイス/演出","設定示唆ボイスやサブ液晶示唆も記録対象","重要"]
+  ],
+  live:"ST終了画面・サミートロフィー・アイテムくじを優先。小吉/中吉/大吉だけでなく、来栖の刀・無名のけん玉など否定系も残す。リセット/駆け抜け後は天井短縮を別枠で判断。",
+  sources:[["一撃 機種解析","https://1geki.jp/slot/l_kabaneri2/"],["一撃 設定差","https://1geki.jp/slot/l_kabaneri2/0/"],["一撃 小役","https://1geki.jp/slot/l_kabaneri2/4/"],["一撃 天井","https://1geki.jp/slot/l_kabaneri2/3/"],["一撃 おみくじ","https://1geki.jp/slot/l_kabaneri2/55/"]]
+ },
+ sao2:{
+  short:"SAOⅡ", name:"スロット ソードアート・オンラインⅡ", maker:"DAITO", intro:"2026", base:"約31G/50枚", pure:"AT 約3.6枚/G / 上位 約7.2枚/G",
+  spec:[
+   ["1","1/238.4","1/386.2","97.6%"],["2","1/232.3","1/364.3","98.8%"],["3","1/232.7","1/368.1","100.2%"],
+   ["4","1/218.9","1/326.8","105.3%"],["5","1/225.2","1/340.6","110.4%"],["6","1/191.7","1/269.6","114.9%"]
+  ], specHeads:["設定","CZ","AT","出玉率"],
+  roles:[
+   ["弱チェリー","約1/79.9"],["スイカ","約1/82.6"],["弱チャンス目","約1/163.8"],["強チェリー","約1/327.7"],
+   ["強チャンス目A","約1/1057.0"],["ウルティマ・チェリー","1/16384"]
+  ],
+  settingRoles:[["1","1/1057.0"],["2","1/993.0"],["3","1/936.2"],["4","1/885.6"],["5","1/840.2"],["6","1/799.2"]],
+  settingRoleName:"強チャンス目B",
+  ceilings:["CZ間：実G 最大499G+α","CZ間：液晶G 最大800G+α","AT間：実G 最大1200G+α","設定変更/初回上位CZ失敗後：CZ実G 256G+α"],
+  reset:["CZ間実G天井 256G+αへ短縮","GGO死銃モード移行率優遇","AT突入後は最大80GでSC当選"],
+  judge:["CZ・AT確率","強チャンス目B 1/1057.0→1/799.2","通常スイカSC当選率","強チェリーCZ当選率","詩乃モードAT直撃 1/18091.8→1/3415.7","確定CZ 1/20177.5→1/7077.2","CZ失敗時アイテム 20.3%→30.1%","AT終了画面・ミニキャラ・コパンダトロフィー"],
+  hints:[
+   ["🖼️","AT終了画面","キリト&シノン=基本 / 制服=奇数 / ソファー=偶数 / 木漏れ日=高設定 / 夏祭り=高設定強 / 幼少期=5以上示唆","最重要"],
+   ["🏆","コパンダトロフィー","色・種類を必ず記録して設定推測へ反映","最重要"],
+   ["👤","ミニキャラ","ED中・マザーズロザリオ中のミニキャラを記録","重要"],
+   ["🎯","確定CZ/THE END","出現率に大きな設定差","重要"],
+   ["🔫","詩乃モード直撃","天井・フリーズ等の例外を除いてカウント","重要"]
+  ],
+  live:"AT終了画面・コパンダトロフィー・ミニキャラを保存。強チャンス目B、詩乃モード直撃、確定CZ、CZ失敗時アイテム、通常スイカSCも設定判別へ入れる。",
+  sources:[["なな徹 解析まとめ","https://nana-press.com/kaiseki/machine/1158/"],["なな徹 設定判別","https://nana-press.com/kaiseki/machine/1158/37242/"],["なな徹 スペック","https://nana-press.com/kaiseki/machine/1158/36900/"],["一撃 天井","https://1geki.jp/slot/l_sao2/3/"]]
+ }
+};
+
+let bookSelected="ghoul";
+function v5Table(heads,rows){
+ return `<div style="overflow:auto"><table class="data-table"><tr>${heads.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join("")}</tr>`).join("")}</table></div>`;
+}
+function renderBookPills(){
+ const r=document.getElementById("bookMachinePills"); if(!r)return;
+ r.innerHTML=Object.entries(v5Machines).map(([k,m])=>`<button class="machine-pill ${k===bookSelected?"on":""}" data-book="${k}">${m.short}</button>`).join("");
+ r.querySelectorAll("[data-book]").forEach(b=>b.onclick=()=>{bookSelected=b.dataset.book;renderBookPills();renderBook();});
+}
+function renderBook(){
+ const root=document.getElementById("bookContent"); if(!root)return;
+ const m=v5Machines[bookSelected];
+ const roleRows=m.roles.map(x=>[x[0],x[1]]);
+ const settingRole=m.settingRoles.length?`<div class="card book-section"><h3>🧮 設定差のある小役</h3><b style="font-size:11px">${m.settingRoleName}</b>${v5Table(["設定","確率"],m.settingRoles)}</div>`:"";
+ root.innerHTML=`
+ <div class="book-hero searchable"><h2>${m.name}</h2><p>${m.maker}｜導入 ${m.intro}｜${m.base}｜${m.pure}</p><div class="quickchips"><span class="quickchip">スペック</span><span class="quickchip">小役</span><span class="quickchip">天井</span><span class="quickchip">リセット</span><span class="quickchip">設定判別</span><span class="quickchip">終了画面</span><span class="quickchip">トロフィー🏆</span></div></div>
+ <div class="card book-section searchable"><h3>📊 基本スペック</h3>${v5Table(m.specHeads,m.spec)}</div>
+ <div class="card book-section searchable"><h3>🎲 小役確率</h3>${v5Table(["小役","確率"],roleRows)}<div class="source-note">未公表値は「調査中」のまま保持し、推測値は入れません。</div></div>
+ ${settingRole}
+ <div class="card book-section searchable"><h3>⏱️ 天井・朝一・リセット</h3><div class="info-grid"><div class="info-box"><b>天井</b><small>${m.ceilings.join("<br>")}</small></div><div class="info-box"><b>朝一/リセット</b><small>${m.reset.join("<br>")}</small></div></div></div>
+ <div class="card book-section searchable"><h3>🧠 設定判別ポイント</h3><div class="hint-list">${m.judge.map((x,i)=>`<div class="hint-row"><div class="hint-art">${["📈","🎯","🔢","⚡","🧩","🔍","💡","🎰"][i%8]}</div><div><b>${x}</b><small>実戦データに追加して複数要素で判定</small></div><span class="hint-tag">判別</span></div>`).join("")}</div></div>
+ <div class="card book-section searchable"><h3>🖼️ 終了画面・トロフィー・設定示唆</h3><div class="hint-list">${m.hints.map(x=>`<div class="hint-row"><div class="hint-art">${x[0]}</div><div><b>${x[1]}</b><small>${x[2]}</small></div><span class="hint-tag">${x[3]}</span></div>`).join("")}</div><div class="source-note">東京喰種の実戦ページには画像付き選択を実装済み。他3機種も同じ方式で画像ライブラリを拡張する設計です。</div></div>
+ <div class="card book-section searchable"><h3>🎰 実戦でチャッピーが見る順番</h3><div class="reason"><b>この機種の重点項目</b><p>${m.live}</p></div></div>
+ <div class="card book-section searchable"><h3>📚 情報元・更新</h3><div class="sourcebox">確認日：2026/09/17<br>${m.sources.map(s=>`<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join(" ｜ ")}<br>解析サイトの文章を丸ごと複製せず、数値・事実を実戦用に再構成しています。</div></div>`;
+ applyBookSearch();
+}
+function applyBookSearch(){
+ const q=(document.getElementById("bookSearch")?.value||"").trim().toLowerCase();
+ document.querySelectorAll("#bookContent .searchable").forEach(e=>e.classList.remove("search-hit"));
+ if(!q)return;
+ const hits=[...document.querySelectorAll("#bookContent .searchable")].filter(e=>e.textContent.toLowerCase().includes(q));
+ hits.forEach(e=>e.classList.add("search-hit"));
+ if(hits[0])hits[0].scrollIntoView({behavior:"smooth",block:"center"});
+}
+document.getElementById("bookSearch")?.addEventListener("change",applyBookSearch);
+document.getElementById("bookSearch")?.addEventListener("search",applyBookSearch);
+renderBookPills();renderBook();
+
+function updateLiveModelGuide(){
+ const key=document.getElementById("liveModel")?.value||"ghoul";
+ const m=v5Machines[key], box=document.getElementById("liveMachineGuide"), lib=document.getElementById("hintLibrary");
+ if(box)box.innerHTML=`<b>${m.name}</b><p>${m.live}</p>`;
+ if(lib){
+   const title=lib.querySelector(".section");
+   if(title) title.innerHTML= key==="ghoul" ? '🖼️ 設定示唆・終了画面 <small>東京喰種：画像タップ入力</small>' : `🖼️ 設定示唆・終了画面 <small>${m.short}：V5図鑑と連動</small>`;
+   // Current detailed image library is Tokyo Ghoul-specific. Keep it visible only for Ghoul to prevent wrong entries.
+   lib.querySelectorAll(".hint-tabs,#hintGroups,.hint-summary,.source-note").forEach(el=>el.style.display=key==="ghoul"?"":"none");
+   let note=lib.querySelector(".datefix");
+   if(note)note.textContent=key==="ghoul"?"出た画面を画像で確認して「＋」を押すだけ。回数は台番号＋実戦日ごとに保存し、設定推測へ反映します。":"この機種の終了画面・トロフィーは上の「この機種で今見るもの」と機種図鑑を参照。画像タップ入力ライブラリは順次同じ形式へ拡張します。";
+ }
+}
+document.getElementById("liveModel")?.addEventListener("change",updateLiveModelGuide);
+setTimeout(updateLiveModelGuide,0);
+
+// Save model + free machine number in addition to legacy fields.
+const oldSave=document.getElementById("savePlay")?.onclick;
+if(document.getElementById("savePlay")){
+ document.getElementById("savePlay").onclick=()=>{
+   const hidden=document.getElementById("liveMachine");
+   const free=document.getElementById("liveMachineText");
+   if(hidden&&free&&free.value){
+     if(![...hidden.options].some(o=>o.value===free.value)){const o=document.createElement("option");o.value=free.value;o.textContent=free.value;hidden.appendChild(o);}
+     hidden.value=free.value;
+   }
+   if(oldSave)oldSave();
+   const a=JSON.parse(localStorage.getItem("pdv4plays")||"[]");
+   if(a.length){a[a.length-1].model=document.getElementById("liveModel")?.value||"ghoul";localStorage.setItem("pdv4plays",JSON.stringify(a));}
+ };
+}
+
 </script>
-</body>
-</html>
+</body></html>
